@@ -1127,42 +1127,9 @@ The architecture has **6 explicit trust boundaries** plus additional implicit bo
 
 ---
 
-## 7. Compliance Mapping
+## 7. Metrics & KPIs
 
-### 7.1 GDPR Requirements
-
-| Requirement | MCP Implementation | Relevant Threats |
-|-------------|-------------------|------------------|
-| Data Minimization | M11.1: Least privilege tools, return only necessary fields | I1 |
-| Purpose Limitation | M20.1: Intent-based authorization | E1, E2 |
-| Accountability | M8.1: Comprehensive audit logging | R1, R2, R3 |
-| Integrity & Confidentiality | M5.1: TLS encryption, M6.1: Resource integrity | T2, T3 |
-| Right to Erasure | Audit trail for deletion requests | R1 |
-
-### 7.2 PCI DSS Requirements
-
-| Requirement | MCP Implementation | Relevant Threats |
-|-------------|-------------------|------------------|
-| 3.4: Protect cardholder data | M12.1: Context isolation, M13.1: Resource access controls | I2, I3 |
-| 8.2: Unique IDs | M9.1: Pass agent/session identity | R2 |
-| 10.2: Audit trail | M8.1-M8.6: Comprehensive logging | R1, R2, R3 |
-| 6.5.1: Injection flaws | M7.1-M7.6: Prompt injection defenses | T4 |
-| 7.1: Least privilege | M11.1: Tool permission minimization | I1, E1 |
-
-### 7.3 SOC 2 Requirements
-
-| Control | MCP Implementation | Relevant Threats |
-|---------|-------------------|------------------|
-| CC6.1: Logical access | M1.1: Server authentication, M20.1: Authorization | S1, S3, E2 |
-| CC7.2: System monitoring | Anomaly detection, SIEM integration | All threats |
-| CC6.6: Segregation of duties | M19.6: Tool isolation, M20.6: Approval workflows | E1, E2 |
-| CC6.7: Access removal | Session termination, credential rotation | E3, E4 |
-
----
-
-## 8. Metrics & KPIs
-
-### 8.1 Security Metrics
+### 7.1 Security Metrics
 
 **Preventive Metrics**:
 - % of MCP servers with verified certificates
@@ -1181,7 +1148,7 @@ The architecture has **6 explicit trust boundaries** plus additional implicit bo
 - Mean time to recover from security incident
 - % of incidents with complete audit trail
 
-### 8.2 Monitoring Dashboards
+### 7.2 Monitoring Dashboards
 
 **Real-Time Security Dashboard**:
 - Active MCP connections (authenticated vs. unauthenticated)
@@ -1198,9 +1165,9 @@ The architecture has **6 explicit trust boundaries** plus additional implicit bo
 
 ---
 
-## 9. Incident Response Playbooks
+## 8. Incident Response Playbooks
 
-### 9.1 Compromised MCP Server
+### 8.1 Compromised MCP Server
 
 **Detection Indicators**:
 - Anomalous tool behavior
@@ -1216,7 +1183,7 @@ The architecture has **6 explicit trust boundaries** plus additional implicit bo
 5. **Recover**: Restore from clean backup, re-verify
 6. **Learn**: Update allowlist, improve detection
 
-### 9.2 Context Poisoning Incident
+### 8.2 Context Poisoning Incident
 
 **Detection Indicators**:
 - Unusual agent responses
@@ -1231,7 +1198,7 @@ The architecture has **6 explicit trust boundaries** plus additional implicit bo
 5. **Notify**: Alert affected users if needed
 6. **Harden**: Update sanitization rules
 
-### 9.3 Unauthorized Data Access
+### 8.3 Unauthorized Data Access
 
 **Detection Indicators**:
 - Mass data retrieval
@@ -1248,7 +1215,7 @@ The architecture has **6 explicit trust boundaries** plus additional implicit bo
 
 ---
 
-## 10. Key Takeaways
+## 9. Key Takeaways
 
 ### For Workshop Participants
 
