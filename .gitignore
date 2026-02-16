@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+
+# Virtual environments
+.venv/
+venv/
+
+# Cursor
+.cursor/
+
+# OS
+.DS_Store
