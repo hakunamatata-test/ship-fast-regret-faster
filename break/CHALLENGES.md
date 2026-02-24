@@ -17,14 +17,7 @@ Standalone MCP challenge servers you can run locally and connect to with **MCPJa
 1. Install and run MCPJam with npm:
 
    ```bash
-   npx -y @anthropic-ai/mcp-jam
-   ```
-
-   Or install globally and run:
-
-   ```bash
-   npm install -g @anthropic-ai/mcp-jam
-   mcp-jam
+   npx @mcpjam/inspector@latest
    ```
 
 2. MCPJam will open in your browser (or give you a URL). Use it to add and connect to the challenge servers below.
@@ -36,7 +29,7 @@ Standalone MCP challenge servers you can run locally and connect to with **MCPJa
 For each challenge you want to play:
 
 1. **Add your server** in MCPJam:
-   - Click **Add your server** (or equivalent).
+   - Click **Add Server** (or equivalent).
    - **Server name:** e.g. `Challenge 1` (use a different name per challenge if you run several).
    - **Connection type:** **STDIO**.
    - **Command:** (replace `<path>` with the absolute path to your repo, e.g. `/Users/you/ship-fast-regret-faster`):
@@ -68,26 +61,12 @@ For each challenge you want to play:
 Track your progress by checking off the challenges you’ve completed:
 
 - [ ] **Challenge 1 — Secret exposure (flight booking)**  
-  `01-oops-that-was-private` — Discover an internal ref from flight/airport tools and use it in booking status to get the flag.
+  `01-oops-that-was-private` — Discover an internal coupon from a flight booking server.
 
 - [ ] **Challenge 2 — Confused Deputy (authorization mismatch)**  
-  `02-deputy-in-the-middle` — Exploit the server’s use of client-supplied context instead of your session to perform a privileged action and get the flag.
+  `02-deputy-in-the-middle` — Explore how the server decides who can do what, then use that to retrieve the flag.
 
 - [ ] **Challenge 3 — Tool poisoning (metadata)**  
-  `03-looks-legit-to-me` — Get the server to reveal the internal report by triggering hidden instructions in a tool’s description (e.g. troubleshooting or full system report).
+  `03-looks-legit-to-me` — Get the server to reveal the internal report by triggering hidden instructions in a tool’s description.
 
 ---
-
-## Quick reference: run commands
-
-Replace `<path>` with the absolute path to the `ship-fast-regret-faster` repo root.
-
-| # | Server name   | Command |
-|---|---------------|--------|
-| 1 | Challenge 1   | `uv --directory <path>/ship-fast-regret-faster/break/01-oops-that-was-private run challenge.py` |
-| 2 | Challenge 2   | `uv --directory <path>/ship-fast-regret-faster/break/02-deputy-in-the-middle run challenge.py` |
-| 3 | Challenge 3   | `uv --directory <path>/ship-fast-regret-faster/break/03-looks-legit-to-me run challenge.py` |
-
----
-
-**Flag format:** `CTF{...}` for all challenges.
