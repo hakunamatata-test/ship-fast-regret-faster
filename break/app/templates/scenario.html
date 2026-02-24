@@ -50,6 +50,9 @@ CONFIG_END</textarea>
   {% elif scenario.id == 3 %}
   <label for="input">Task</label>
   <input type="text" id="input" name="input" placeholder="e.g. Investigate customer 123. Try 'full report' and check the log." />
+  {% elif scenario.id == 4 %}
+  <label for="input">Request</label>
+  <input type="text" id="input" name="input" placeholder="e.g. Search flights JFK to LAX, or flight details FLT-101, or booking status" />
   {% endif %}
 
   <button type="button" id="run">{% if scenario.id == 2 %}Summarize Document{% else %}Run{% endif %}</button>
@@ -133,6 +136,7 @@ CONFIG_END</textarea>
           } else {
             outputEl.textContent = data.summary || '';
             if (data.exfiltrated) outputEl.textContent += '\n\n(Report was also sent to the requested endpoint.)';
+            if (data.secret_exposed) outputEl.textContent += '\n\n(Sensitive config was exposed.)';
           }
           if (data.log && data.log.length) {
             logEl.textContent = data.log.join('\n');

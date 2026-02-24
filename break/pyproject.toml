@@ -1,0 +1,9 @@
+[project]
+name = "break-ctf-workshop"
+version = "0.1.0"
+description = "Intentionally vulnerable MCP servers for educational CTF workshop. Do not use in production."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=1.26.0",
+]
