@@ -1,5 +1,5 @@
 """
-Workshop demo app: three MCP-related attack patterns.
+Workshop demo app: four MCP-related attack patterns.
 
 Run: uvicorn app.main:app --reload
 Or:  docker compose up --build
@@ -12,7 +12,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-from app.scenarios import naming_attack, prompt_injection, tool_chaining
+from app.scenarios import naming_attack, prompt_injection, secret_exposure, tool_chaining
 
 # ---------------------------------------------------------------------------
 # Paths and templating
@@ -39,6 +39,11 @@ SCENARIOS = [
         "title": "Scenario 3",
         "description": "Investigate a customer (123 or 456). Try a full report; then see what the log allows.",
     },
+    {
+        "id": 4,
+        "title": "Scenario 4",
+        "description": "Book flights with the assistant. Search flights, check details, booking status, airport info, and promos.",
+    },
 ]
 
 
@@ -47,6 +52,7 @@ def get_all_tools() -> list[dict]:
     tools = []
     tools.extend(naming_attack.TOOLS)
     tools.extend(tool_chaining.TOOLS)
+    tools.extend(secret_exposure.TOOLS)
     return tools
 
 
@@ -72,7 +78,7 @@ async def index(request: Request):
 
 @app.get("/scenario/{sid:int}", response_class=HTMLResponse)
 async def scenario_page(request: Request, sid: int):
-    if sid not in (1, 2, 3):
+    if sid not in (1, 2, 3, 4):
         return HTMLResponse("<h1>Not found</h1>", status_code=404)
     scenario = next(s for s in SCENARIOS if s["id"] == sid)
     return templates.TemplateResponse(
@@ -104,6 +110,13 @@ async def run_scenario_3(body: dict):
     """Scenario 3: Tool chaining — exfiltration via composed tools."""
     user_input = body.get("input", "").strip()
     return tool_chaining.run_tool_chaining_scenario(user_input)
+
+
+@app.post("/api/scenario/4")
+async def run_scenario_4(body: dict):
+    """Scenario 4: Secret exposure — flight booking; coupon leaked via internal ref."""
+    user_input = body.get("input", "").strip()
+    return secret_exposure.run_secret_exposure_scenario(user_input)
 
 
 # Not linked from UI; curious attendees can discover it manually.

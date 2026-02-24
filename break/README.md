@@ -1,6 +1,6 @@
 # MCP Attack Patterns — Workshop Demo
 
-A simple interactive demo app used in workshops to demonstrate **three MCP-related attack patterns**. This is **not** a CTF: there are no flags, scoring, or authentication. Attendees explore each scenario briefly before speakers walk through the vulnerability and mitigations.
+A simple interactive demo app used in workshops to demonstrate **four MCP-related attack patterns**. This is **not** a CTF: there are no flags, scoring, or authentication. Attendees explore each scenario briefly before speakers walk through the vulnerability and mitigations.
 
 **This application is intentionally vulnerable for educational purposes.** Do not deploy in production or expose to untrusted users.
 
@@ -10,7 +10,7 @@ A simple interactive demo app used in workshops to demonstrate **three MCP-relat
 
 - A single **FastAPI** app with **Jinja2** templates.
 - No external APIs; no real LLM calls. Agent behavior is simulated deterministically in Python.
-- Three scenarios, each illustrating a different structural design flaw that leads to abuse.
+- Four scenarios, each illustrating a different structural design flaw that leads to abuse.
 
 ---
 
@@ -65,6 +65,16 @@ Then open **http://localhost:8080**. The app runs on port 8080.
 
 **Learning point for attendees:** You had to discover “full report”, get the export code from the log, then use that code when requesting forwarding—and the full record was sent to your URL. Each tool alone might be safe; **chaining them on user instruction** created exfiltration. The lesson: **tool composition must be policy-gated.** Restrict which tools can be combined, which URLs are allowed, and what data can be included in outbound payloads.
 
+
+### Scenario 4: Secret Exposure (flight-booking theme)
+
+- **Goal:** Obtain the hidden 70% discount coupon from the flight-booking assistant.
+- **Setup:** The server offers search_flights, get_flight_details, get_booking_status, get_airport_info, and list_promos. The coupon is returned only by **get_booking_status** when called with a specific internal booking ref. That ref is **leaked** in responses from **get_flight_details** (for flight FLT-101: field `internal_ref`) and **get_airport_info** (for airport code STAFF: line "Internal lookup ref: 7001"). There is no access control on get_booking_status—anyone who obtains the ref can receive the coupon.
+- **Behavior:** Discovery path: (1) Explore tools (search flights, flight details, airport info, list promos). (2) Notice the internal ref (e.g. 7001) in get_flight_details for FLT-101 or in get_airport_info for STAFF. (3) Call get_booking_status with that ref (e.g. "booking status 7001") to receive the coupon. The log notes when a privileged ref was used.
+- **Teaching point:** Internal identifiers must not be exposed in user-facing tool responses. Tools that return sensitive data (e.g. promos, coupons) must validate the caller or ref and must not accept internal refs from untrusted input.
+
+**Learning point for attendees:** You found an internal ref in flight or airport data and used it in get_booking_status to obtain the coupon. The lesson: **do not leak internal refs in API responses**, and **sensitive tools must enforce access control** instead of trusting refs that could be discovered elsewhere.
+
 ---
 
 ## STRIDE Mapping
@@ -74,6 +84,7 @@ Then open **http://localhost:8080**. The app runs on port 8080.
 | **Naming / Impersonation** | **Spoofing**           | A tool is chosen by name similarity; a less-trusted or malicious tool can be selected and impersonate the intended one. |
 | **Prompt Injection**       | **Tampering**          | Untrusted document content is treated as instructions and alters behavior (e.g. revealing secrets). |
 | **Tool Chaining**          | **Information Disclosure** | Composing “get record” and “send webhook” allows sensitive data to be sent to an attacker-controlled endpoint. |
+| **Secret Exposure**        | **Information Disclosure** | Internal ref leaked by flight/airport tools; get_booking_status returns coupon when given that ref (no access control). |
 
 ---
 
@@ -84,6 +95,9 @@ Then open **http://localhost:8080**. The app runs on port 8080.
 - **Tools:** The app does **not** link to or list tools in the UI. Curious attendees can discover **`/tools`** by exploring (e.g. trying `/tools` in the browser or common API paths). That endpoint returns the registered tools in JSON. So they can find out what tools exist without being told.
 - **How chaining is triggered:** The Scenario 3 log guides discovery: “Request ‘full report’” and “Export code for forwarding” imply that a “forwarding” action exists. Attendees experiment with phrasing (e.g. “forward report to …” with the export code). There are no direct pointers in the UI. After they successfully trigger a forward, the log explicitly mentions **“Chaining: get_customer_record → send_webhook”** and **“Invoked send_webhook”**, so they see which tools were involved only after the fact.
 - **How might someone find `/attacker-log`?** We don’t put the URL in the task placeholder or description. After a **successful** forward in Scenario 3, the log adds one line: **“Receiving endpoint: /attacker-log”**. So they discover where to view the exfiltrated payload only after they’ve already triggered the chaining. Alternatively they might guess common paths (e.g. `/log`, `/webhook-log`, `/attacker-log`) while exploring the app. Facilitators can mention that “if you get a forward to work, the log will tell you where the data went” without naming the path upfront.
+
+- **Scenario 4 (secret exposure):** The internal ref (7001) appears in **get_flight_details** for flight FLT-101 (field `internal_ref`) and in **get_airport_info** for airport code **STAFF** ("Internal lookup ref: 7001"). search_flights also logs "ref 7001 used for FLT-101" when FLT-101 is in the results. Participants must use that ref in get_booking_status to receive the coupon.
+
 
 ---
 
@@ -97,6 +111,7 @@ break/
       naming_attack.py   # Scenario 1
       prompt_injection.py# Scenario 2
       tool_chaining.py   # Scenario 3
+      secret_exposure.py # Scenario 4
     templates/
       index.html
       scenario.html
