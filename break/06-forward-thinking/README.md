@@ -1,16 +1,14 @@
-# 06 – Forward Thinking (tool chaining / data exfiltration)
+# 06 – Forward thinking (tool chaining / exfiltration)
 
 **Educational use only.** This server is intentionally vulnerable for workshop purposes.
 
-This exercise illustrates **tool chaining risk**: individually safe tools (get customer record, get full report, send report) become dangerous when the model chains them on user request. Obtain an export code from a full report, then use it to "forward" a report and retrieve the flag.
+## Challenge
+
+Customer records, reports, and a way to send them on. Each tool alone might be harmless—but use them in the right order and the server might hand you the prize.
 
 ## Goal
 
-Obtain the flag by chaining tools: first get a full report (which reveals an export code), then use that code when asking to forward or send the report. The send tool returns the flag when given a valid export code.
-
-## Hint
-
-Explore customer records and report options. One tool returns a "full report" that includes an export code in its response. Another tool can forward or send a report to a URL but requires that export code. Chain the tools in the right order.
+Find the flag. One tool gives you something; another needs it. Connect the dots.
 
 ## Flag format
 
@@ -30,10 +28,4 @@ Or from this directory:
 cd break/06-forward-thinking && uv run challenge.py
 ```
 
-Configure your MCP client to run this command via STDIO, then use the tools to find the flag. For step-by-step setup with MCPJam, see [break/CHALLENGES.md](../CHALLENGES.md).
-
-## Solution
-
-1. Call `get_customer_record` with customer_id 123 or 456 to see that customers exist.
-2. Call `get_full_report` with customer_id 123 (or 456). The response includes "Export code for forwarding: 7".
-3. Call `send_report` with url (any URL, e.g. https://example.com), export_code=7, and customer_id=123. The tool returns success and the flag (e.g. "Report delivered. Flag: CTF{...}").
+Configure your MCP client to run this command via STDIO, then use the tools to find the flag. For step-by-step setup with MCPJam, see the [break README](../README.md).

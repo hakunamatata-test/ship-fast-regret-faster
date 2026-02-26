@@ -1,84 +1,80 @@
-# MCP Attack Patterns — Workshop
+# BREAK the MCP
 
-Workshop materials for **MCP-related attack patterns**. Attack demos run as **MCPJam** STDIO challenges (see [CHALLENGES.md](CHALLENGES.md)); the **web app** in `app/` is a landing page that lists the challenges and how to run them.
+Welcome to Phase 2 of the workshop, where you will apply your understanding of common MCP vulnerabilities to break MCP servers in a fun, Capture the Flag style exercise!
 
-**These challenges are intentionally vulnerable for educational purposes.** Do not deploy in production or expose to untrusted users.
-
----
-
-## What This Repo Is
-
-- **MCPJam challenges** (folders `01-*` … `06-*`): STDIO MCP servers; run with `uv run --directory <path>/break <challenge>/challenge.py` and connect via MCPJam. Each has a `CTF{...}` flag.
-- **Web app** (`app/`): FastAPI + Jinja2 landing page; no in-browser scenarios. Run with Docker or uvicorn to show the challenge list and setup instructions.
+This repo contains standalone MCP challenge servers you can run, connect to and play around with through [**MCPJam Inspector**](https://github.com/MCPJam/inspector). Each challenge has a flag in the format `CTF{...}`. Use the checklist at the bottom to track which ones you've completed. Stuck? See [SOLUTIONS.md](SOLUTIONS.md) for the intended solutions (spoilers).
 
 ---
 
-## How to Run
+## Prerequisites
 
-**Option 1 — Docker (recommended)**
-
-```bash
-docker compose up --build
-```
-
-**Option 2 — Local**
-
-```bash
-cd break
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-Then open **http://localhost:8080**. The app runs on port 8080.
+- **Node.js** and **npm** (for MCPJam)
+- **uv** (Python package manager) — [install uv](https://docs.astral.sh/uv/getting-started/installation/)
+- This repo cloned locally
 
 ---
 
-## What Each Challenge Covers
+## 1. Run MCPJam locally
 
-See [CHALLENGES.md](CHALLENGES.md) for run commands and hints. Summary:
+1. Install and run MCPJam with npm:
 
-| Challenge | Theme |
-|-----------|--------|
-| **01** — Oops, That Was Private | Secret exposure (flight booking; internal ref leaked). |
-| **02** — Deputy in the Middle | Man-in-the-middle / proxy. |
-| **03** — Looks Legit to Me | Tool poisoning via metadata/description. |
-| **04** — Name Your Poison | Tool naming / impersonation (similar names; wrong tool can be selected). |
-| **05** — Behind the Curtain | Prompt injection via tool parameters (CONFIG block in directives). |
-| **06** — Forward Thinking | Tool chaining / exfiltration (full report + export code → send_report). |
+   ```bash
+   npx @mcpjam/inspector@latest
+   ```
+
+2. MCPJam will open in your browser (or give you a URL). Use it to add and connect to the challenge servers below.
 
 ---
 
-## STRIDE Mapping
+## 2. Add and run a challenge server
 
-| Challenge / theme        | STRIDE category        |
-|--------------------------|-------------------------|
-| Naming / Impersonation   | Spoofing                |
-| Prompt injection (params)| Tampering               |
-| Tool chaining            | Information disclosure  |
-| Secret exposure          | Information disclosure  |
-| Tool poisoning (metadata)| Spoofing / Tampering    |
+For each challenge you want to play:
 
----
+1. **Add your server** in MCPJam:
+   - Click **Add Server**.
+   - **Server name:** e.g. `Challenge 1` (use a different name per challenge if you run several).
+   - **Connection type:** `STDIO`.
+   - **Command:** (replace `<path>` with the absolute path to your repo, e.g. `/Users/you/ship-fast-regret-faster`): <br>
 
-## Repo Structure
+   | Challenge | Command |
+   |-----------|--------|
+   | 01 Oops that was private | `uv --directory <path>/break/01-oops-that-was-private run challenge.py` |
+   | 02 Deputy in the middle | `uv --directory <path>/break/02-deputy-in-the-middle run challenge.py` |
+   | 03 Looks legit to me | `uv --directory <path>/break/03-looks-legit-to-me run challenge.py` |
+   | 04 Name your poison | `uv --directory <path>/break/04-name-your-poison run challenge.py` |
+   | 05 Behind the curtain | `uv --directory <path>/break/05-behind-the-curtain run challenge.py` |
+   | 06 Forward thinking | `uv --directory <path>/break/06-forward-thinking run challenge.py` |
 
-```
-break/
-  app/
-    main.py              # FastAPI landing page (lists challenges)
-    templates/
-      index.html
-    static/
-  01-oops-that-was-private/   … 06-forward-thinking/   # MCPJam STDIO challenges
-  CHALLENGES.md           # Setup and checklist
-  requirements.txt
-  Dockerfile
-  docker-compose.yml
-  README.md
-```
+2. Click **Add server**.
+
+3. **Connect** to the server.
+
+4. Open **Chat**, then **Show me connected tools**.
+
+5. Use the tools in chat to find the flag. Each challenge's flag is in the form **`CTF{...}`**.
 
 ---
 
-## Intentionally Vulnerable
+## 3. Challenge checklist
 
-This application is **intentionally vulnerable** for educational purposes. Use only in controlled workshop or lab environments. Do not use in production or expose to untrusted networks or users.
+Track your progress by checking off the challenges you've completed:
+
+- [ ] **Challenge 1 — Oops that was private**  
+  `01-oops-that-was-private` — Discover an internal coupon from a flight booking server.
+
+- [ ] **Challenge 2 — Deputy in the middle**  
+  `02-deputy-in-the-middle` — Explore how the server decides who can do what, then use that to retrieve the flag.
+
+- [ ] **Challenge 3 — Looks legit to me**  
+  `03-looks-legit-to-me` — Get the server to reveal the internal report by triggering hidden instructions in a tool's description.
+
+- [ ] **Challenge 4 — Name your poison**  
+  `04-name-your-poison` — When you ask to send a message, more than one tool could answer—what you get back depends which one the server chooses.
+
+- [ ] **Challenge 5 — Behind the curtain**  
+  `05-behind-the-curtain` — The summarizer reads more than the document. Find the format it obeys and how to ask for the rest.
+
+- [ ] **Challenge 6 — Forward thinking**  
+  `06-forward-thinking` — One tool gives you something another tool needs. Piece the steps together to receive the flag.
+
+---
