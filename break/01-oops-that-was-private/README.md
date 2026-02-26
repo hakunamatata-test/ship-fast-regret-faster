@@ -4,7 +4,7 @@
 
 ## Challenge
 
-A flight-booking server with search, details, booking status, airport info, and promos. Something valuable is tucked away—if you know where to look.
+A flight-booking server with search, details, booking status, airport info, and promos. Something valuable is tucked away - if you know where to look.
 
 ## Goal
 
