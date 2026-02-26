@@ -10,8 +10,15 @@ Solutions will be shared towards the end of Break Phase.
 
 ## Prerequisites
 
-- **Node.js** and **npm** (for MCPJam)
-- **uv** (Python package manager) — [install uv](https://docs.astral.sh/uv/getting-started/installation/)
+- MCPJam account (for model access) — [sign up](https://login.mcpjam.com/sign-up)
+- **Node.js** and **npm** (for MCPJam) - [install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+  <br> Note (macOS): `npx` should be available by default with Node.js. If it is not available, run:
+   ```bash
+   brew update
+   brew install node
+   ```
+- **uv** (Python package manager) — [install](https://docs.astral.sh/uv/getting-started/installation/)
+
 - This repo cloned locally
 
 ---
