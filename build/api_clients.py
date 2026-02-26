@@ -8,12 +8,10 @@ load_dotenv()
 
 # API Keys
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 TICKETMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")
 
 # API Base URLs
 GOOGLE_PLACES_BASE_URL = "https://places.googleapis.com/v1"
-OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 TICKETMASTER_BASE_URL = "https://app.ticketmaster.com/discovery/v2/"
 
 async def make_google_places_request(
@@ -229,7 +227,7 @@ async def search_events_ticketmaster_ext(
 ) -> dict[str, Any] | None:
     """Search events with optional keyword, date range, classification, or venue.
 
-    Date format: YYYY-MM-DD or ISO 8601 (e.g. 2024-06-01T00:00:00Z).
+    Date format: ISO 8601 (e.g. 2026-06-01T00:00:00Z).
     classification_name examples: Music, Sports, Arts, Film, Miscellaneous.
 
     Returns:
@@ -290,7 +288,7 @@ async def search_venues_ticketmaster(
     url = f"{TICKETMASTER_BASE_URL}venues.json"
     params: dict[str, Any] = {
         "apikey": TICKETMASTER_API_KEY,
-        "city": city.strip(),
+        "keyword": city.strip(),
         "countryCode": country_code,
         "size": min(max(1, limit), 200),
     }

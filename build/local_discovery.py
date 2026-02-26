@@ -412,8 +412,8 @@ async def find_events_by_date_range(
     Args:
         city: City name (e.g., "San Francisco")
         country: Country name or ISO 2-letter code (e.g., "US")
-        start_date: Start date (YYYY-MM-DD or ISO 8601, e.g. 2024-06-01T00:00:00Z)
-        end_date: End date (YYYY-MM-DD or ISO 8601)
+        start_date: Start date in ISO 8601, e.g. 2024-06-01T00:00:00Z
+        end_date: End date in ISO 8601, e.g. 2024-06-01T00:00:00Z
         limit: Maximum number of results (default: 10)
 
     Returns:
@@ -534,86 +534,6 @@ async def find_events_at_venue(
     result_text = "\n---\n".join(formatted)
     result_text += "\n\nEvent IDs stored for follow-up."
     return result_text
-
-
-@mcp.tool()
-async def get_travel_time(
-    origin_latitude: float,
-    origin_longitude: float,
-    destination_latitude: float,
-    destination_longitude: float,
-    travel_mode: str = "driving"
-) -> str:
-    """Get travel time from your current location to a destination.
-    
-    Args:
-        origin_latitude: Your current latitude
-        origin_longitude: Your current longitude
-        destination_latitude: Destination latitude
-        destination_longitude: Destination longitude
-        travel_mode: Travel mode - "driving", "walking", "bicycling", or "transit" (default: "driving")
-    
-    Returns:
-        Travel time and distance information
-    """
-    result = await api_clients.get_travel_time_google(
-        origin_lat=origin_latitude,
-        origin_lng=origin_longitude,
-        destination_lat=destination_latitude,
-        destination_lng=destination_longitude,
-        mode=travel_mode
-    )
-    
-    if not result or "routes" not in result or not result["routes"]:
-        return "Unable to calculate travel time. Please check the coordinates."
-    
-    route = result["routes"][0]
-    legs = route.get("legs", [])
-    
-    if not legs:
-        return "No route information available."
-    
-    leg = legs[0]
-    duration = leg.get("duration", {}).get("text", "Unknown")
-    distance = leg.get("distance", {}).get("text", "Unknown")
-    
-    return f"""
-Travel Information ({travel_mode}):
-  Distance: {distance}
-  Duration: {duration}
-  
-Origin: ({origin_latitude}, {origin_longitude})
-Destination: ({destination_latitude}, {destination_longitude})
-"""
-
-
-@mcp.tool()
-async def summarize_recommendations(
-    text: str,
-    max_words: int = 100
-) -> str:
-    """Summarize recommendation results (restaurants, events, or places) in a short paragraph.
-
-    Pass the raw text output from find_restaurants_or_coffee_shops, find_events_in_city,
-    check_dine_in_delivery_options, check_vegetarian_options, or check_ticket_availability
-    to get a brief, readable summary.
-
-    Args:
-        text: The full text of the discovery results to summarize (e.g. from a previous tool call).
-        max_words: Approximate maximum words in the summary (default: 100).
-
-    Returns:
-        A short summary highlighting key options and practical details.
-    """
-    if not text or not text.strip():
-        return "No text provided to summarize. Pass the output from a discovery tool (e.g. find_restaurants_or_coffee_shops or find_events_in_city)."
-    summary = await api_clients.summarize_with_openrouter(
-        text=text.strip(),
-        max_words=max_words,
-    )
-    if not summary:
-        return "Summarization is unavailable. Check that OPENROUTER_API_KEY is set and that the OpenRouter API is reachable."
-    return summary
 
 
 @mcp.resource("place://{key}")
