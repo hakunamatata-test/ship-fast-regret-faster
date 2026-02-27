@@ -110,7 +110,7 @@ URL: {url}
 
 
 @mcp.tool()
-async def find_restaurants_or_coffee_shops(
+async def find_restaurants(
     city: str,
     place_type: str = "restaurant",
     limit: int = 10
@@ -536,6 +536,20 @@ async def find_events_at_venue(
     return result_text
 
 
+# TODO Add your own tools here
+# Find tool ideas in TOOL_IDEAS.md
+
+# TODO Tool 1
+# @mcp.tool()
+# Tool 1 definition
+
+# TODO Tool 2
+# @mcp.tool()
+# Tool 2 definition
+
+# ...more tools...
+
+
 @mcp.resource("place://{key}")
 async def get_place_ids(key: str) -> str:
     """Get stored place IDs by key.
@@ -565,6 +579,31 @@ async def get_event_ids(key: str) -> str:
         return ",".join(_stored_event_ids[key])
     return "No event IDs found for this key."
 
+
+# TODO Add your own resources here
+# @mcp.resource("resource://{key}")
+# Resource definition
+
+# TODO Resource 1
+# @mcp.resource("resource://{key}")
+# Resource 1 definition
+
+# TODO Resource 2
+# @mcp.resource("resource://{key}")
+# Resource 2 definition
+# ...more resources...
+
+
+# TODO Add your own prompt here
+# @mcp.prompt()
+
+# TODO Prompt 1
+# @mcp.prompt()
+
+# TODO Prompt 2
+# @mcp.prompt()
+# Prompt 2 definition
+# ...more prompts...
 
 def main():
     """Initialize and run the MCP server."""

@@ -51,7 +51,34 @@ In the `build/` directory, create or edit `.env`:
 GOOGLE_API_KEY=your_api_key_here
 ```
 
-Do not commit `.env` to version control.
+Make sure to add .env to .gitignore
+
+---
+
+## 6. API Debugging
+
+Try running this curl request to ensure your API key is set up correctly
+
+```
+curl -X GET -H 'Content-Type: application/json' \
+-H "X-Goog-Api-Key: <api-key>" \
+-H "X-Goog-FieldMask: id,displayName,formattedAddress,dineIn" \
+https://places.googleapis.com/v1/places/ChIJt4S8_XuBhYARzDbXXYAiuno
+```
+
+You should get the following response:
+
+```
+{
+  "id": "ChIJt4S8_XuBhYARzDbXXYAiuno",
+  "formattedAddress": "138 Cyril Magnin St, San Francisco, CA 94102, USA",
+  "displayName": {
+    "text": "Magnin Street Cafe & Bistro",
+    "languageCode": "en"
+  },
+  "dineIn": true
+}
+```
 
 ---
 

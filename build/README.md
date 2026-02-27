@@ -1,10 +1,10 @@
 # BUILD the MCP
 
-This phase focuses on **building** a real MCP (Model Context Protocol) server: **Local Discovery & Events**. You will run it through [**MCPJam Inspector**](https://github.com/MCPJam/inspector), the same tool used for the Break challenges, and interact with it via chat and tools.
+This phase focuses on **building** a real MCP (Model Context Protocol) server: **Local Discovery & Events**. You will run it through [**MCPJam Inspector**](https://github.com/MCPJam/inspector), and interact with it via chat and tools.
 
-**Story:** *"Help me discover local restaurants, events, and activities—find places, check dine-in/delivery/vegetarian options, and explore events and venues in my area."*
+**Story:** *"Help me discover local restaurants, events, and activities. Find places, check dine-in/delivery/vegetarian options, and explore events and venues in my area."*
 
-The server exposes tools and resources so an AI (or user) can search for restaurants or coffee shops (Google Places), check dining options for those places, and search for events and venues (Ticketmaster Discovery). Stored place and event IDs are exposed as MCP resources for follow-up queries.
+The server exposes tools and resources so an AI (or user) can search for restaurant (Google Places), check dining options for those places, and search for events and venues (Ticketmaster Discovery). Stored place and event IDs are exposed as MCP resources for follow-up queries.
 
 ---
 
