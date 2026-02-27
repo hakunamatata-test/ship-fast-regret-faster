@@ -264,7 +264,6 @@ async def check_vegetarian_options(
         
         name = place_details.get("displayName", {}).get("text", "Unknown")
         vegetarian = place_details.get("servesVegetarianFood", False)
-        vegan = place_details.get("servesVeganFood", False) # TODO remove vegan option
         
         options = []
         if vegetarian:
@@ -272,11 +271,6 @@ async def check_vegetarian_options(
             vegetarian_places.append(name)
         else:
             options.append("Vegetarian ✗")
-        
-        if vegan:
-            options.append("Vegan ✓")
-        else:
-            options.append("Vegan ✗")
         
         results.append(f"""
 {name} (ID: {place_id}):
@@ -551,7 +545,7 @@ async def find_events_at_venue(
 
 
 @mcp.resource("place://{key}")
-async def get_place_ids(key: str) -> str:
+def get_place_ids(key: str) -> str:
     """Get stored place IDs by key.
     
     Args:
@@ -566,7 +560,7 @@ async def get_place_ids(key: str) -> str:
 
 
 @mcp.resource("event://{key}")
-async def get_event_ids(key: str) -> str:
+def get_event_ids(key: str) -> str:
     """Get stored event IDs by key.
     
     Args:
@@ -592,6 +586,31 @@ async def get_event_ids(key: str) -> str:
 # @mcp.resource("resource://{key}")
 # Resource 2 definition
 # ...more resources...
+
+@mcp.prompt()
+def plan_concert_and_dinner(city: str) -> str:
+    """Generates a user message to plan a concert and dinner in a given city.
+    
+    Args:
+        city: City name (e.g., "San Francisco")
+    
+    Returns:
+        Prompt message to plan a concert and dinner in a given city
+    """
+    return f"Plan a veg-friendly dinner and a concert in {city}"
+
+@mcp.prompt()
+def full_day_plan(city: str, date: str) -> str:
+    """Generates a user message to plan a full day in a given city on a given date. Includes coffee, event and dinner.
+    
+    Args:
+        city: City name (e.g., "San Francisco")
+        date: Date (e.g., "2026-03-01")
+    
+    Returns:
+        Prompt message to plan a full day in a given city on a given date
+    """
+    return f"Plan a full day in {city} on {date} - include coffee places, events and dinner"
 
 
 # TODO Add your own prompt here
