@@ -100,7 +100,7 @@ The server uses two external APIs:
 
 | Tool | Description |
 |------|-------------|
-| `find_restaurants_or_coffee_shops` | Search restaurants or coffee shops in a city (Google Places). Results are stored for follow-up tools. |
+| `find_restaurants` | Search restaurants or coffee shops in a city (Google Places). Results are stored for follow-up tools. |
 | `check_dine_in_delivery_options` | Check which places offer dine-in, delivery, or takeout (by place IDs or `"latest"`). |
 | `check_vegetarian_options` | Check which places serve vegetarian/vegan (by place IDs or `"latest"`). |
 | `find_events_in_city` | Find events in a city (Ticketmaster). |
